@@ -3,19 +3,50 @@
 @{
 }
 
-<div class="singles-container">
-    @foreach (var pokemonSingle in Model.PokemonSinglesList)
-    {
-        var imageUrl = Url.Content($"~{pokemonSingle.Image}");
-        <div class="individual-container">
-            <img class="pokemon-image" src="@imageUrl" alt="Listing Image" />
-            <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.Set</p>
-            <p class="pokemon-price">£@pokemonSingle.Price</p>
-            <form method="post" asp-page-handler="Delete" class="delete-form">
-                <input type="hidden" name="id" value="@pokemonSingle.Id" />
-                <button type="submit">Delete</button>
-            </form>
-            <a href="#" class="preview-button" data-back="See More" data-front="See More"></a>
+<div class="filter-container">
+    <form method="get">
+        <div>
+            <label for="nameFilter">Name:</label>
+            <input type="text" id="nameFilter" name="Filter.NameFilter" value="@Model.Filter.NameFilter" />
         </div>
+        <div>
+            <label>Rarity:</label><br />
+            @foreach (var rarity in Model.RarityOptions)
+            {
+                <div>
+                    <input type="checkbox" id="rarity_@rarity" name="Filter.RaritySelection" value="@rarity" @(Model.Filter.RaritySelection != null && Model.Filter.RaritySelection.Contains(rarity) ? "checked" : "") />
+                    <label for="rarity_@rarity">@rarity</label>
+                </div>
+            }
+        </div>
+        <div>
+            <label for="minPriceFilter">Min Price:</label>
+            <input type="number" id="minPriceFilter" name="Filter.MinimumPriceFilter" value="@Model.Filter.MinimumPriceFilter" />
+        </div>
+        <div>
+            <label for="maxPriceFilter">Max Price:</label>
+            <input type="number" id="maxPriceFilter" name="Filter.MaximumPriceFilter" value="@Model.Filter.MaximumPriceFilter" />
+        </div>
+        <button type="submit">Filter</button>
+    </form>
+</div>
+
+<div class="singles-container">
+    @if (Model.Filter.PokemonSinglesList != null)
+    {
+        foreach (var pokemonSingle in Model.Filter.PokemonSinglesList)
+        {
+            var imageUrl = Url.Content($"~{pokemonSingle.Image}");
+            <div class="individual-container">
+                <img class="pokemon-image" src="@imageUrl" alt="Listing Image" />
+                <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.Set</p>
+                <p class="pokemon-price">£@pokemonSingle.Price</p>
+                <form method="post" asp-page-handler="Delete" class="delete-form">
+                    <input type="hidden" name="id" value="@pokemonSingle.Id" />
+                    <button type="submit">Delete</button>
+                </form>
+                <a href="#" class="preview-button" data-back="See More" data-front="See More"></a>
+            </div>
+        }
     }
 </div>
