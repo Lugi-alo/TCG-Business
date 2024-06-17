@@ -1,0 +1,59 @@
+﻿@page
+@model FuwaCards.Pages.Admin.StockModel
+@{
+}
+
+<form method="post" enctype="multipart/form-data">
+
+    <input type="text" asp-for="@Model.PokemonSingles.Id" readonly="readonly" />
+
+    <div class="form-group">
+        <label asp-for="@Model.PokemonSingles.Name"> </label>
+        <input type="text" asp-for="@Model.PokemonSingles.Name" />
+        <span asp-validation-for="@Model.PokemonSingles.Name"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PokemonSingles.Quantity"> </label>
+        <input type="text" asp-for="@Model.PokemonSingles.Quantity" />
+        <span asp-validation-for="@Model.PokemonSingles.Quantity"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PokemonSingles.Rarity"> </label>
+        <input type="text" asp-for="@Model.PokemonSingles.Rarity" />
+        <span asp-validation-for="@Model.PokemonSingles.Rarity"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PokemonSingles.Set"> </label>
+        <input type="text" asp-for="@Model.PokemonSingles.Set" />
+        <span asp-validation-for="@Model.PokemonSingles.Set"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PokemonSingles.Price"> </label>
+        <input type="text" asp-for="@Model.PokemonSingles.Price" />
+        <span asp-validation-for="@Model.PokemonSingles.Price"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PokemonSingles.Condition"> </label>
+        <input type="text" asp-for="@Model.PokemonSingles.Condition" />
+        <span asp-validation-for="@Model.PokemonSingles.Condition"></span>
+    </div>
+
+    <div class="form-group-image">
+        <label class="form-title">Upload Image</label>
+        <input type="file" name="imageFile" class="form-control imageControl" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PokemonSingles.AltTex"> </label>
+        <input type="text" asp-for="@Model.PokemonSingles.AltTex" />
+        <span asp-validation-for="@Model.PokemonSingles.AltTex"></span>
+    </div>
+
+	<input type="submit" value="Save" />
+
+</form>
