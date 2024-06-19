@@ -17,6 +17,8 @@ namespace FuwaCards.Pages
         public PokemonSinglesFilter Filter { get; set; } = new PokemonSinglesFilter();
 
         public List<string> RarityOptions { get; set; } = new List<string>();
+        public List<string> SetNameOptions { get; set; } = new List<string>();
+
 
         public singlesModel(AppDataContext context)
         {
@@ -50,15 +52,14 @@ namespace FuwaCards.Pages
         {
             IQueryable<PokemonSingles> query = _context.PokemonSingles;
 
-            if (!string.IsNullOrEmpty(Filter.NameFilter))
-            {
-                var filter = Filter.NameFilter.ToUpper();
-                query = query.Where(s => s.Name.ToUpper().Contains(filter));
-            }
-
             if (Filter.RaritySelection != null && Filter.RaritySelection.Any())
             {
                 query = query.Where(s => Filter.RaritySelection.Contains(s.Rarity));
+            }
+
+            if (Filter.SetNameSelection != null && Filter.SetNameSelection.Any())
+            {
+                query = query.Where(s => Filter.SetNameSelection.Contains(s.SetName));
             }
 
             if (Filter.MinimumPriceFilter.HasValue)
@@ -75,6 +76,11 @@ namespace FuwaCards.Pages
 
             RarityOptions = await _context.PokemonSingles
                 .Select(s => s.Rarity)
+                .Distinct()
+                .ToListAsync();
+
+            SetNameOptions = await _context.PokemonSingles
+                .Select(s => s.SetName)
                 .Distinct()
                 .ToListAsync();
         }
