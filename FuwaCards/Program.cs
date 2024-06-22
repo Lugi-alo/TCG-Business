@@ -27,14 +27,13 @@ builder.Services.AddDbContext<AppDataContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
-    options.Tokens.EmailConfirmationTokenProvider = "emailconfirmation";
 })
     .AddEntityFrameworkStores<AppDataContext>()
     .AddDefaultTokenProviders()
     .AddTokenProvider<EmailTokenProvider<AppUser>>("emailconfirmation")
     .AddDefaultUI();
 
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, SendGridEmailSender>();
 
 // Application
 var app = builder.Build();
