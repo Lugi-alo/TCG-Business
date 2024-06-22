@@ -71,17 +71,21 @@ namespace FuwaCards.Pages
             {
                 query = query.Where(s => s.Price <= Filter.MaximumPriceFilter.Value);
             }
-
+            
+            query = query.OrderBy(s => s.Name);
             Filter.PokemonSinglesList = await query.ToListAsync();
 
             RarityOptions = await _context.PokemonSingles
                 .Select(s => s.Rarity)
                 .Distinct()
+                .OrderBy(s => s)
                 .ToListAsync();
+                
 
             SetNameOptions = await _context.PokemonSingles
                 .Select(s => s.SetName)
                 .Distinct()
+                .OrderBy(s => s)
                 .ToListAsync();
         }
     }
