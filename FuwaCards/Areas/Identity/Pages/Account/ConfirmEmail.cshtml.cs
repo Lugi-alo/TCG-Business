@@ -1,15 +1,16 @@
-﻿using FuwaCards.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿#nullable disable
+
+using System;
+using System.Text;
+using System.Threading.Tasks;
+using FuwaCards.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FuwaCards.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
@@ -20,7 +21,7 @@ namespace FuwaCards.Areas.Identity.Pages.Account
         }
 
         [TempData]
-        public string Message { get; set; }
+        public string StatusMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
@@ -37,8 +38,9 @@ namespace FuwaCards.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            Message = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
             return Page();
         }
     }
 }
+

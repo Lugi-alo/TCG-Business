@@ -6,11 +6,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
 using System.Threading.Tasks;
 using FuwaCards.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -86,8 +84,6 @@ public class RegisterModel : PageModel
                 LastName = Input.LastName
             };
 
-            Console.WriteLine(user);
-
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             if (result.Succeeded)
@@ -99,12 +95,11 @@ public class RegisterModel : PageModel
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmail",
                     pageHandler: null,
-                    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                    values: new { area = "Identity", userId = user.Id, code = code },
                     protocol: Request.Scheme);
 
                 await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
 
                 if (Input.Email == "fuwacards@gmail.com")
                 {
@@ -132,8 +127,6 @@ public class RegisterModel : PageModel
             }
         }
 
-        // If we reach here, something went wrong, redisplay the form with errors
         return Page();
     }
 }
-
