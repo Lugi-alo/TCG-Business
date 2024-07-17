@@ -5,35 +5,45 @@
 
 <div class="filter-container">
     <form method="get">
-        <div>
-            <label>Rarity:</label><br />
-            @foreach (var rarity in Model.RarityOptions)
-            {
-                <div>
-                    <input type="checkbox" id="rarity_@rarity" name="Filter.RaritySelection" value="@rarity" @(Model.Filter.RaritySelection != null && Model.Filter.RaritySelection.Contains(rarity) ? "checked" : "") />
-                    <label for="rarity_@rarity">@rarity</label>
-                </div>
-            }
-            <label> Set: </label><br />
-            @foreach (var setName in Model.SetNameOptions)
-            {
-                <div>
-                    <input type="checkbox" id="setName_@setName" name="Filter.SetNameSelection" value="@setName" @(Model.Filter.SetNameSelection != null && Model.Filter.SetNameSelection.Contains(setName) ? "checked" : "") />
-                    <label for="setName_@setName">@setName</label>
-                </div>
-            }
+        <div class="dropdown">
+            <button type="button" class="dropdown-toggle" data-toggle="rarityDropdown">
+                <span class="filter-label">Rarity</span>
+                <div class="filter-arrow"></div>
+            </button>
+            <div id="rarityDropdown" class="dropdown-content">
+                @foreach (var rarity in Model.RarityOptions)
+                {
+                    var count = Model.Filter.RarityCounts.ContainsKey(rarity) ? Model.Filter.RarityCounts[rarity] : 0;
+                    <div class="filter-option">
+                        <input type="checkbox" class="checkbox" id="rarity_@rarity" name="Filter.RaritySelection" value="@rarity" @(Model.Filter.RaritySelection != null && Model.Filter.RaritySelection.Contains(rarity) ? "checked" : "") />
+                        <label for="rarity_@rarity" class="rarityLabel">@rarity </label>
+                        <label for="rarity_@count" class="rarityCount"> (@count) </label>
+                    </div>
+                }
+            </div>
         </div>
-        <div>
-            <label for="minPriceFilter">Min Price:</label>
-            <input type="number" id="minPriceFilter" name="Filter.MinimumPriceFilter" value="@Model.Filter.MinimumPriceFilter" />
+
+        <div class="dropdown">
+            <button type="button" class="dropdown-toggle" data-toggle="setDropdown">
+                <span class="filter-label">Set</span>
+                <div class="filter-arrow"></div>
+            </button>
+            <div id="setDropdown" class="dropdown-content">
+                @foreach (var setName in Model.SetNameOptions)
+                {
+                    var count = Model.Filter.SetNameCounts.ContainsKey(setName) ? Model.Filter.SetNameCounts[setName] : 0;
+
+                    <div class="filter-option">
+                        <input type="checkbox" id="setName_@setName" name="Filter.SetNameSelection" value="@setName" @(Model.Filter.SetNameSelection != null && Model.Filter.SetNameSelection.Contains(setName) ? "checked" : "") />
+                        <label for="rarity_@setName" class="rarityLabel">@setName </label>
+                        <label for="rarity_@count" class="rarityCount"> (@count)</label>
+                    </div>
+                }
+            </div>
         </div>
-        <div>
-            <label for="maxPriceFilter">Max Price:</label>
-            <input type="number" id="maxPriceFilter" name="Filter.MaximumPriceFilter" value="@Model.Filter.MaximumPriceFilter" />
-        </div>
-        <button type="submit">Filter</button>
     </form>
 </div>
+
 
 <div class="singles-container">
     @if (Model.Filter.PokemonSinglesList != null)
@@ -45,17 +55,21 @@
                 <img class="pokemon-image" src="@imageUrl" alt="Listing Image" />
                 <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
                 <p class="pokemon-price">£@pokemonSingle.Price</p>
-                <form method="post" asp-page-handler="Delete" class="delete-form">
-                    <input type="hidden" name="id" value="@pokemonSingle.Id" />
-                    <button type="submit">Delete</button>
-                </form>
-                <form method="get" asp-page="/Admin/Stock" class="edit-form">
-                    <input type="hidden" name="id" value="@pokemonSingle.Id" />
+                @if (User.IsInRole("Admin"))
+                {
+                    <form method="post" asp-page-handler="Delete" class="delete-form">
+                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form method="get" asp-page="/Admin/Stock" class="edit-form">
+                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
                     <button type="submit" class="edit-button">Edit</button>
                 </form>
+                }
 
                 <a href="#" class="preview-button" data-back="See More" data-front="See More"></a>
             </div>
         }
     }
 </div>
+
