@@ -6,12 +6,13 @@ body {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    gap: 20px
+    gap: 10px;
 }
 
 .filter-container {
-    width: 24%;
+    width: 18%;
     margin-left: 2%;
+    margin-right: 2%;
     float: left;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
@@ -19,30 +20,31 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.filter-container label {
-     font-weight: 600;
-     margin-bottom: 10px;
-     color: #555;
-
+.filter-arrow {
+    background-image: url('../assets/arrow.png');
+    height: 50px;
+    width: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
 }
 
 .filter-container input[type="text"],
 .filter-container input[type="number"],
 .filter-container button {
-     width: 100%;
-     padding: 10px;
-     box-sizing: border-box;
-     border: 1px solid #ddd;
-     border-radius: 5px;
-     font-size: 14px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
 .filter-container input[type="checkbox"] {
-     margin-right: 5px;
-     height: 20px;
-
+    margin-right: 5px;
+    height: 20px;
 }
-
 
 .pokemon-image {
     width: 100%;
@@ -53,25 +55,25 @@ body {
 }
 
 .individual-container {
-    width: 250px; 
+    width: 250px;
     border-radius: 5px;
     border: 1px solid #ddd;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    transition: box-shadow 0.3s ease; 
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
-.individual-container:hover {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
-}
+    .individual-container:hover {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
 
 .pokemon-name {
     font-size: 16px;
     margin-top: 10px;
-    text-align: center; 
+    text-align: center;
 }
 
 .pokemon-price {
@@ -93,47 +95,84 @@ body {
     width: 80%;
 }
 
-.preview-button:hover:after {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
+    .preview-button:hover:after {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+
+    .preview-button:hover:before {
+        opacity: 0;
+        transform: translateY(50%) rotateX(90deg);
+    }
+
+    .preview-button:after {
+        border-radius: 5px;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        width: 100%;
+        color: white;
+        display: block;
+        transition: 0.5s;
+        position: absolute;
+        background: #BDA13E;
+        content: attr(data-back);
+        transform: translateY(-50%) rotateX(90deg);
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .preview-button:before {
+        border-radius: 5px;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        color: white;
+        display: block;
+        padding: 0 30px;
+        line-height: 40px;
+        transition: 0.5s;
+        position: relative;
+        background: #7851A9;
+        content: attr(data-front);
+        transform: translateY(0) rotateX(0);
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+button.dropdown-toggle {
+    border: none;
+    background-color: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
 
-.preview-button:hover:before {
-     opacity: 0;
-     transform: translateY(50%) rotateX(90deg);
-}
-
-.preview-button:after {
-    border-radius: 5px;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    width: 100%;
-    color: white;
-    display: block;
-    transition: 0.5s;
-    position: absolute;
-    background: #BDA13E;
-    content: attr(data-back);
-    transform: translateY(-50%) rotateX(90deg);
-    margin-bottom: 10px;
+.filter-label {
+    margin-top: 15px;
+    font-size: 18px;
     letter-spacing: 1px;
 }
 
-.preview-button:before {
-    border-radius: 5px;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    color: white;
-    display: block;
-    padding: 0 30px;
-    line-height: 40px;
-    transition: 0.5s;
-    position: relative;
-    background: #7851A9;
-    content: attr(data-front);
-    transform: translateY(0) rotateX(0);
-    margin-bottom: 10px;
-    letter-spacing: 1px;
+.rarityCount {
+    float: right;
+    margin-top: 7px;
+    margin-right: 45px;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.open-filter {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    overflow: hidden;
+    transition: height 0.3s ease-out;
+    height: 0;
 }

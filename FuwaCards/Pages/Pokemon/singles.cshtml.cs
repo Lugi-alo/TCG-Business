@@ -71,7 +71,7 @@ namespace FuwaCards.Pages
             {
                 query = query.Where(s => s.Price <= Filter.MaximumPriceFilter.Value);
             }
-            
+
             query = query.OrderBy(s => s.Name);
             Filter.PokemonSinglesList = await query.ToListAsync();
 
@@ -80,13 +80,23 @@ namespace FuwaCards.Pages
                 .Distinct()
                 .OrderBy(s => s)
                 .ToListAsync();
-                
+
+            Filter.RarityCounts = await _context.PokemonSingles
+                .GroupBy(s => s.Rarity)
+                .Select(g => new { Rarity = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(g => g.Rarity, g => g.Count);
 
             SetNameOptions = await _context.PokemonSingles
                 .Select(s => s.SetName)
                 .Distinct()
                 .OrderBy(s => s)
                 .ToListAsync();
+
+            Filter.SetNameCounts = await _context.PokemonSingles
+                .GroupBy (s => s.SetName)
+                .Select(g => new { SetName = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(g => g.SetName, g => g.Count);
         }
+
     }
 }

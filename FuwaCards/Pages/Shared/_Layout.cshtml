@@ -11,7 +11,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FuwaCards</title>
-    <link rel="stylesheet" href="~/css/site.css?v=4"/>
+    <link rel="stylesheet" href="~/css/site.css?v=7"/>
 </head>
 <body>
     <ul class="navbar-nav">
@@ -48,9 +48,12 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - FuwaCards - <a asp-area="" asp-page="/Privacy">Privacy</a>
+
         </div>
     </footer>
 
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/script/filter.js" asp-append-version="true" defer></script>
+
 </body>
 </html>
