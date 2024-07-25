@@ -25,7 +25,8 @@ public class SendGridEmailSender : IEmailSender
         var client = new SendGridClient(sendGridApiKey);
         var msg = new SendGridMessage()
         {
-            From = new EmailAddress("ejolohan@gmail.com", "FuwaCards"),
+            From = new EmailAddress("sometext@someemail.com", "test"),
+            // sample email / name
             Subject = subject,
             PlainTextContent = message,
             HtmlContent = message
