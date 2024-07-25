@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ***REMOVED***, "FuwaCards\FuwaCards.csproj", "{8DCBAB0E-3F35-4518-8574-9BF7AF29A3ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCG_Business", "TCG_Business/TCG_Business.csproj", "{8DCBAB0E-3F35-4518-8574-9BF7AF29A3ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

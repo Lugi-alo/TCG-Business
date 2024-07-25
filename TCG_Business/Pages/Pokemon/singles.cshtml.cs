@@ -75,27 +75,31 @@ namespace FuwaCards.Pages
             query = query.OrderBy(s => s.Name);
             Filter.PokemonSinglesList = await query.ToListAsync();
 
-            RarityOptions = await _context.PokemonSingles
-                .Select(s => s.Rarity)
-                .Distinct()
-                .OrderBy(s => s)
-                .ToListAsync();
-
-            Filter.RarityCounts = await _context.PokemonSingles
+            var rarityGroups = await _context.PokemonSingles
                 .GroupBy(s => s.Rarity)
-                .Select(g => new { Rarity = g.Key, Count = g.Count() })
-                .ToDictionaryAsync(g => g.Rarity, g => g.Count);
-
-            SetNameOptions = await _context.PokemonSingles
-                .Select(s => s.SetName)
-                .Distinct()
-                .OrderBy(s => s)
+                .Select(g => new {Rarity = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
                 .ToListAsync();
 
-            Filter.SetNameCounts = await _context.PokemonSingles
-                .GroupBy (s => s.SetName)
-                .Select(g => new { SetName = g.Key, Count = g.Count() })
-                .ToDictionaryAsync(g => g.SetName, g => g.Count);
+            RarityOptions = rarityGroups
+                .Select(g => g.Rarity)
+                .ToList();
+
+            Filter.RarityCounts = rarityGroups
+                .ToDictionary(g => g.Rarity, g => g.Count);
+
+            var nameGroups = await _context.PokemonSingles
+                .GroupBy(s => s.SetName)
+                .Select(g => new {SetName = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .ToListAsync();
+
+            SetNameOptions = nameGroups
+                .Select(g => g.SetName)
+                .ToList();
+
+            Filter.SetNameCounts = nameGroups
+                .ToDictionary(g => g.SetName, g => g.Count);
         }
 
     }

@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    ***REMOVED***: {
+    "FuwaCards": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
