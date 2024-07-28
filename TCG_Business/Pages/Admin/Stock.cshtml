@@ -39,8 +39,15 @@
     </div>
 
     <div class="form-group">
+        <label asp-for="PokemonSingles.Price"> </label>
+        <input type="number" asp-for="PokemonSingles.Price" step="0.01" />
+        <span asp-validation-for="PokemonSingles.Price"></span>
+    </div>
+
+
+    <div class="form-group">
         <label asp-for="@Model.PokemonSingles.Price"> </label>
-        <input type="text" asp-for="@Model.PokemonSingles.Price" />
+        <input type="text" asp-for="@Model.PokemonSingles.Price" step="0.01" />
         <span asp-validation-for="@Model.PokemonSingles.Price"></span>
     </div>
 

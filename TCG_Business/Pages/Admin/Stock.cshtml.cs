@@ -44,7 +44,6 @@ namespace FuwaCards.Pages.Admin
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
             if (ImageFile != null)
             {
                 var filePath = Path.Combine("wwwroot/images", ImageFile.FileName);
@@ -82,5 +81,6 @@ namespace FuwaCards.Pages.Admin
 
             return RedirectToPage("/Index");
         }
+
     }
 }

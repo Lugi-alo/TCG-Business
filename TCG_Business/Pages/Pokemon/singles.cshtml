@@ -1,10 +1,15 @@
 ﻿@page
 @model FuwaCards.Pages.singlesModel
 @{
+    var pageCount = (int)Math.Ceiling((double)Model.Filter.TotalItems / Model.Filter.PageSize);
 }
 
-<div class="filter-container">
     <form method="get">
+    <div class="filter-container">
+
+        <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
+
+
         <div class="dropdown">
             <button type="button" class="dropdown-toggle" data-toggle="rarityDropdown">
                 <span class="filter-label">Rarity</span>
@@ -41,20 +46,34 @@
                 }
             </div>
         </div>
-    </form>
-</div>
+        </div>
 
+        <div class="pagination">
+            @if (Model.Filter.PageNumber > 1)
+            {
+                <button type="submit" name="Filter.PageNumber" value="@(Model.Filter.PageNumber - 1)">Previous</button>
+            }
+            @for (var i = 1; i <= pageCount; i++)
+            {
+                <button type="submit" name="Filter.PageNumber" value="@i" @(Model.Filter.PageNumber == i ? "disabled" : "")>@i</button>
+            }
+            @if (Model.Filter.PageNumber < pageCount)
+            {
+                <button type="submit" name="Filter.PageNumber" value="@(Model.Filter.PageNumber + 1)">Next</button>
+            }
+        </div>
+    </form>
 
 <div class="singles-container">
-    @if (Model.Filter.PokemonSinglesList != null)
+@if (Model.Filter.PokemonSinglesList != null)
+{
+    foreach (var pokemonSingle in Model.Filter.PokemonSinglesList)
     {
-        foreach (var pokemonSingle in Model.Filter.PokemonSinglesList)
-        {
-            var imageUrl = Url.Content($"~{pokemonSingle.Image}");
-            <div class="individual-container">
-                <img class="pokemon-image" src="@imageUrl" alt="Listing Image" />
-                <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
-                <p class="pokemon-price">£@pokemonSingle.Price</p>
+        var imageUrl = Url.Content($"~{pokemonSingle.Image}");
+        <div class="individual-container">
+            <img class="pokemon-image" src="@imageUrl" alt="Listing Image" />
+            <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
+                <p class="pokemon-price">£@pokemonSingle.Price.ToString("F2")</p>
                 @if (User.IsInRole("Admin"))
                 {
                     <form method="post" asp-page-handler="Delete" class="delete-form">
@@ -66,10 +85,10 @@
                     <button type="submit" class="edit-button">Edit</button>
                 </form>
                 }
+            
 
-                <a href="#" class="preview-button" data-back="See More" data-front="See More"></a>
-            </div>
-        }
+            <a href="#" class="preview-button" data-back="See More" data-front="See More"></a>
+        </div>
     }
+}
 </div>
-

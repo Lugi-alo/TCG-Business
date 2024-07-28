@@ -19,7 +19,6 @@ namespace FuwaCards.Pages
         public List<string> RarityOptions { get; set; } = new List<string>();
         public List<string> SetNameOptions { get; set; } = new List<string>();
 
-
         public singlesModel(AppDataContext context)
         {
             _context = context;
@@ -72,12 +71,18 @@ namespace FuwaCards.Pages
                 query = query.Where(s => s.Price <= Filter.MaximumPriceFilter.Value);
             }
 
-            query = query.OrderBy(s => s.Name);
+            Filter.TotalItems = await query.CountAsync();
+
+            query = query
+                .OrderBy(s => s.Name)
+                .Skip((Filter.PageNumber - 1) * Filter.PageSize)
+                .Take(Filter.PageSize);
+
             Filter.PokemonSinglesList = await query.ToListAsync();
 
             var rarityGroups = await _context.PokemonSingles
                 .GroupBy(s => s.Rarity)
-                .Select(g => new {Rarity = g.Key, Count = g.Count() })
+                .Select(g => new { Rarity = g.Key, Count = g.Count() })
                 .OrderByDescending(g => g.Count)
                 .ToListAsync();
 
@@ -90,7 +95,7 @@ namespace FuwaCards.Pages
 
             var nameGroups = await _context.PokemonSingles
                 .GroupBy(s => s.SetName)
-                .Select(g => new {SetName = g.Key, Count = g.Count() })
+                .Select(g => new { SetName = g.Key, Count = g.Count() })
                 .OrderByDescending(g => g.Count)
                 .ToListAsync();
 
