@@ -9,27 +9,6 @@ body {
     gap: 10px;
 }
 
-.filter-container {
-    width: 18%;
-    margin-left: 2%;
-    margin-right: 2%;
-    float: left;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.filter-arrow {
-    background-image: url('../assets/arrow.png');
-    height: 50px;
-    width: 50px;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin-right: 15px;
-    transition: transform 0.3s ease;
-}
-
 .filter-container input[type="text"],
 .filter-container input[type="number"],
 .filter-container button {
@@ -147,6 +126,8 @@ button.dropdown-toggle {
     cursor: pointer;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    position: relative; 
 }
 
 .filter-label {
@@ -167,12 +148,66 @@ button.dropdown-toggle {
     justify-content: space-between;
 }
 
-.open-filter {
-    transform: rotate(180deg);
+.filter-option input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.filter-container {
+    width: 18%;
+    margin-left: 2%;
+    margin-right: 2%;
+    float: left;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.filter-arrow {
+    background-image: url('../assets/arrow.png');
+    height: 20px;
+    width: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.filter-arrow.open-filter {
+    transform: rotate(180deg) translateY(-50%);
 }
 
 .dropdown-content {
     overflow: hidden;
-    transition: height 0.3s ease-out;
-    height: 0;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.dropdown-content.show {
+    max-height: 1000px;
+    opacity: 1;
+ }
+
+button.show-more {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    display: flex;
+    align-items: center;
+}
+
+.extra-options {
+    display: none;
+}
+
+.extra-options.show-all {
+    display: block;
 }
