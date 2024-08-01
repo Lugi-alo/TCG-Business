@@ -3,16 +3,12 @@
 @{
     var pageCount = (int)Math.Ceiling((double)Model.Filter.TotalItems / Model.Filter.PageSize);
 }
-
-<div class="filter-container">
-    <form method="get">
+<form method="get">
+    <div class="filter-container">
         <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
 
         <div class="dropdown">
-            <button type="button" class="dropdown-toggle" data-target="rarityDropdown">
-                <span class="filter-label">Rarity</span>
-                <div class="filter-arrow"></div>
-            </button>
+            <span class="filter-label">Rarity</span>
             <div class="dropdown-content" id="rarityDropdown">
                 @foreach (var rarity in Model.RarityOptions.Take(5))
                 {
@@ -37,15 +33,13 @@
                 @if (Model.RarityOptions.Count > 5)
                 {
                     <button type="button" class="show-more" data-target="rarityDropdown">Show More</button>
+                    <div class="filter-arrow"></div>
                 }
             </div>
         </div>
 
         <div class="dropdown">
-            <button type="button" class="dropdown-toggle" data-target="setDropdown">
-                <span class="filter-label">Set</span>
-                <div class="filter-arrow"></div>
-            </button>
+            <span class="filter-label">Set</span>
             <div class="dropdown-content" id="setDropdown">
                 @foreach (var setName in Model.SetNameOptions.Take(5))
                 {
@@ -70,26 +64,29 @@
                 @if (Model.SetNameOptions.Count > 5)
                 {
                     <button type="button" class="show-more" data-target="setDropdown">Show More</button>
+                    <div class="filter-arrow"></div>
+
                 }
             </div>
         </div>
-    </form>
-</div>
+    </div>
 
-<div class="pagination">
-    @if (Model.Filter.PageNumber > 1)
-    {
-        <button type="submit" name="Filter.PageNumber" value="@(Model.Filter.PageNumber - 1)">Previous</button>
-    }
-    @for (var i = 1; i <= pageCount; i++)
-    {
-        <button type="submit" name="Filter.PageNumber" value="@i" @(Model.Filter.PageNumber == i ? "disabled" : "")>@i</button>
-    }
-    @if (Model.Filter.PageNumber < pageCount)
-    {
-        <button type="submit" name="Filter.PageNumber" value="@(Model.Filter.PageNumber + 1)">Next</button>
-    }
-</div>
+    <div class="content">
+        <div class="pagination">
+            @if (Model.Filter.PageNumber > 1)
+            {
+                <button type="submit" class="page-button" name="Filter.PageNumber" value="@(Model.Filter.PageNumber - 1)">Previous</button>
+            }
+            @for (var i = 1; i <= pageCount; i++)
+            {
+                <button type="submit" class="page-button" name="Filter.PageNumber" value="@i" @(Model.Filter.PageNumber == i ? "disabled" : "")>@i</button>
+            }
+            @if (Model.Filter.PageNumber < pageCount)
+            {
+                <button type="submit" class="page-button" name="Filter.PageNumber" value="@(Model.Filter.PageNumber + 1)">Next</button>
+            }
+        </div>
+    </form>
 
 <div class="singles-container">
     @if (Model.Filter.PokemonSinglesList != null)
