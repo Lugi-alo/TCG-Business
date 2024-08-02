@@ -19,32 +19,21 @@ namespace FuwaCards.Pages
         public List<string> RarityOptions { get; set; } = new List<string>();
         public List<string> SetNameOptions { get; set; } = new List<string>();
 
+        public PokemonSingles SelectedPokemonSingle { get; set; }
+
         public singlesModel(AppDataContext context)
         {
             _context = context;
         }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id)
         {
             await LoadDataAsync();
-        }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            await LoadDataAsync();
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostDeleteAsync(int id)
-        {
-            var pokemonSingle = await _context.PokemonSingles.FindAsync(id);
-            if (pokemonSingle != null)
+            if (id.HasValue)
             {
-                _context.PokemonSingles.Remove(pokemonSingle);
-                await _context.SaveChangesAsync();
+                SelectedPokemonSingle = await _context.PokemonSingles.FindAsync(id.Value);
             }
-
-            return RedirectToPage("/Index");
         }
 
         private async Task LoadDataAsync()
@@ -106,6 +95,5 @@ namespace FuwaCards.Pages
             Filter.SetNameCounts = nameGroups
                 .ToDictionary(g => g.SetName, g => g.Count);
         }
-
     }
 }
