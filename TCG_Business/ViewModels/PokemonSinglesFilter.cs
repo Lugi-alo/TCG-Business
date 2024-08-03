@@ -15,7 +15,7 @@ namespace FuwaCards.ViewModels
         public decimal? MinimumPriceFilter { get; set; }
         public decimal? MaximumPriceFilter { get;set; }
         public List<PokemonSingles> PokemonSinglesList { get; set; }
-        public int PageNumber { get; set; }
+        public int PageNumber { get; set; } 
         public int PageSize { get; set; } = 12;
         public int TotalItems { get; set; }
     }
