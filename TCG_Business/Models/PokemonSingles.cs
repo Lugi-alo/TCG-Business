@@ -11,6 +11,7 @@ namespace FuwaCards.Models
 		public string Rarity { get; set; }
 		public string SetName { get; set; }
 		public string SetNumber { get; set; }
+		public string Type { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }

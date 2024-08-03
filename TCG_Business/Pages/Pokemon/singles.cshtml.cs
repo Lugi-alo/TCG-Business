@@ -18,6 +18,7 @@ namespace FuwaCards.Pages
 
         public List<string> RarityOptions { get; set; } = new List<string>();
         public List<string> SetNameOptions { get; set; } = new List<string>();
+        public List<string> TypeOptions { get; set; } = new List<string>();
 
         public PokemonSingles SelectedPokemonSingle { get; set; }
 
@@ -40,6 +41,7 @@ namespace FuwaCards.Pages
         {
             IQueryable<PokemonSingles> query = _context.PokemonSingles;
 
+            // Apply filters based on the Filter properties
             if (Filter.RaritySelection != null && Filter.RaritySelection.Any())
             {
                 query = query.Where(s => Filter.RaritySelection.Contains(s.Rarity));
@@ -48,6 +50,11 @@ namespace FuwaCards.Pages
             if (Filter.SetNameSelection != null && Filter.SetNameSelection.Any())
             {
                 query = query.Where(s => Filter.SetNameSelection.Contains(s.SetName));
+            }
+
+            if (Filter.TypeSelection != null && Filter.TypeSelection.Any())
+            {
+                query = query.Where(s => Filter.TypeSelection.Contains(s.Type));
             }
 
             if (Filter.MinimumPriceFilter.HasValue)
@@ -60,8 +67,10 @@ namespace FuwaCards.Pages
                 query = query.Where(s => s.Price <= Filter.MaximumPriceFilter.Value);
             }
 
+            // Calculate total items for pagination
             Filter.TotalItems = await query.CountAsync();
 
+            // Apply pagination
             query = query
                 .OrderBy(s => s.Name)
                 .Skip((Filter.PageNumber - 1) * Filter.PageSize)
@@ -69,6 +78,7 @@ namespace FuwaCards.Pages
 
             Filter.PokemonSinglesList = await query.ToListAsync();
 
+            // Load filter options
             var rarityGroups = await _context.PokemonSingles
                 .GroupBy(s => s.Rarity)
                 .Select(g => new { Rarity = g.Key, Count = g.Count() })
@@ -94,6 +104,19 @@ namespace FuwaCards.Pages
 
             Filter.SetNameCounts = nameGroups
                 .ToDictionary(g => g.SetName, g => g.Count);
+
+            var typeGroups = await _context.PokemonSingles
+                .GroupBy(s => s.Type)
+                .Select(g => new { Type = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .ToListAsync();
+
+            TypeOptions = typeGroups
+                .Select(g => g.Type)
+                .ToList();
+
+            Filter.TypeCounts = typeGroups
+                .ToDictionary(g => g.Type, g => g.Count);
         }
     }
 }

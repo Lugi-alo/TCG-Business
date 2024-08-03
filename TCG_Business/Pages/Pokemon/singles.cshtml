@@ -3,6 +3,7 @@
 @{
     var pageCount = (int)Math.Ceiling((double)Model.Filter.TotalItems / Model.Filter.PageSize);
 }
+
 <form method="get">
     <div class="filter-container">
         <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
@@ -65,10 +66,40 @@
                 {
                     <button type="button" class="show-more" data-target="setDropdown">Show More</button>
                     <div class="filter-arrow"></div>
-
                 }
             </div>
         </div>
+
+        <div class="dropdown">
+        <span class="filter-label">Type</span>
+        <div class="dropdown-content" id="typeDropdown">
+            @foreach (var typeName in Model.TypeOptions.Take(5))
+            {
+                var count = Model.Filter.TypeCounts.ContainsKey(typeName) ? Model.Filter.TypeCounts[typeName] : 0;
+                <div class="filter-option">
+                    <input type="checkbox" id="typeName_@typeName" name="Filter.TypeSelection" value="@typeName" @(Model.Filter.TypeSelection != null && Model.Filter.TypeSelection.Contains(typeName) ? "checked" : "") />
+                    <label for="typeName_@typeName" class="typeNameLabel">@typeName</label>
+                    <label class="typeNameCount"> (@count)</label>
+                </div>
+            }
+            <div class="extra-options">
+                @foreach (var typeName in Model.TypeOptions.Skip(5))
+                {
+                    var count = Model.Filter.TypeCounts.ContainsKey(typeName) ? Model.Filter.TypeCounts[typeName] : 0;
+                    <div class="filter-option">
+                        <input type="checkbox" id="typeName_@typeName" name="Filter.TypeSelection" value="@typeName" @(Model.Filter.TypeSelection != null && Model.Filter.TypeSelection.Contains(typeName) ? "checked" : "") />
+                        <label for="typeName_@typeName" class="typeNameLabel">@typeName</label>
+                        <label class="typeNameCount"> (@count)</label>
+                    </div>
+                }
+            </div>
+            @if (Model.TypeOptions.Count > 5)
+            {
+                <button type="button" class="show-more" data-target="typeDropdown">Show More</button>
+                <div class="filter-arrow"></div>
+            }
+        </div>
+    </div>
     </div>
 
     <div class="content">
@@ -88,53 +119,53 @@
         </div>
     </form>
 
-<div class="singles-container">
-    @if (Model.Filter.PokemonSinglesList != null)
-    {
-        foreach (var pokemonSingle in Model.Filter.PokemonSinglesList)
+    <div class="singles-container">
+        @if (Model.Filter.PokemonSinglesList != null)
         {
-            var imageUrl = Url.Content($"~{pokemonSingle.Image}");
-            <div class="individual-container">
-                <img class="pokemon-image" src="@imageUrl" alt="Listing Image" />
-                <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
-                <p class="pokemon-price">£@pokemonSingle.Price.ToString("F2")</p>
-                @if (User.IsInRole("Admin"))
-                {
-                    <form method="post" asp-page-handler="Delete" class="delete-form">
-                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
-                        <button type="submit">Delete</button>
-                    </form>
-                    <form method="get" asp-page="/Admin/Stock" class="edit-form">
-                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
-                        <button type="submit" class="edit-button">Edit</button>
-                    </form>
-                }
-                <a href="?handler=ShowDetails&id=@pokemonSingle.Id" class="preview-button" data-back="See More" data-front="See More"></a>
-            </div>
-        }
-    }
-</div>
-
-@if (Model.SelectedPokemonSingle != null)
-{
-    <div id="modal" class="modal" style="display: block;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()"> Close &times;</span>
-            <img id="modal-image" src="@Url.Content($"~{Model.SelectedPokemonSingle.Image}")" alt="Listing Image" />
-
-            <div class="modal-information">
-                <h2 class="modal-title">@Model.SelectedPokemonSingle.Name</h2>
-                <p class="modal-price">Price: £@Model.SelectedPokemonSingle.Price.ToString("F2")</p>
-
-                <p class="modal-quantity">Quantity</p>
-                <div class="quantity-controls">
-                    <button class="minus-one">-</button>
-                    <button class="quantity">1</button>
-                    <button class="plus-one">+</button>
+            foreach (var pokemonSingle in Model.Filter.PokemonSinglesList)
+            {
+                var imageUrl = Url.Content($"~{pokemonSingle.Image}");
+                <div class="individual-container">
+                    <img class="pokemon-image" src="@imageUrl" alt="Listing Image" />
+                    <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
+                    <p class="pokemon-price">£@pokemonSingle.Price.ToString("F2")</p>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <form method="post" asp-page-handler="Delete" class="delete-form">
+                            <input type="hidden" name="id" value="@pokemonSingle.Id" />
+                            <button type="submit">Delete</button>
+                        </form>
+                        <form method="get" asp-page="/Admin/Stock" class="edit-form">
+                            <input type="hidden" name="id" value="@pokemonSingle.Id" />
+                            <button type="submit" class="edit-button">Edit</button>
+                        </form>
+                    }
+                    <a href="?handler=ShowDetails&id=@pokemonSingle.Id" class="preview-button" data-back="See More" data-front="See More"></a>
                 </div>
+            }
+        }
+    </div>
 
-                <a class="preview-button small" data-back="Add to Basket" data-front="Add to Basket" href="#"></a>
+    @if (Model.SelectedPokemonSingle != null)
+    {
+        <div id="modal" class="modal" style="display: block;">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()"> Close &times;</span>
+                <img id="modal-image" src="@Url.Content($"~{Model.SelectedPokemonSingle.Image}")" alt="Listing Image" />
+
+                <div class="modal-information">
+                    <h2 class="modal-title">@Model.SelectedPokemonSingle.Name</h2>
+                    <p class="modal-price">Price: £@Model.SelectedPokemonSingle.Price.ToString("F2")</p>
+
+                    <p class="modal-quantity">Quantity</p>
+                    <div class="quantity-controls">
+                        <button class="minus-one">-</button>
+                        <button class="quantity">1</button>
+                        <button class="plus-one">+</button>
+                    </div>
+
+                    <a class="preview-button small" data-back="Add to Basket" data-front="Add to Basket" href="#"></a>
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
