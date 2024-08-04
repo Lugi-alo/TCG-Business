@@ -1,0 +1,27 @@
+﻿@page
+@model TCG_Business.Pages.Pokemon.sealedModel
+@{
+    ViewData["Title"] = "Pokemon Listings";
+}
+
+<div class="sealed-container">
+    @foreach (var pokemonSealed in Model.PokemonSealedList)
+    {
+        <div class="individual-container-sealed">
+            <img class="pokemon-image-sealed" src="@Url.Content($"~{pokemonSealed.Image}")" alt="Listing Image" />
+            <p class="pokemon-name">@pokemonSealed.Name</p>
+            <p class="pokemon-price">£@pokemonSealed.Price.ToString("F2")</p>
+
+            <form method="post" asp-page-handler="Delete" class="delete-form">
+                <input type="hidden" name="id" value="@pokemonSealed.Id" />
+                <button type="submit">Delete</button>
+            </form>
+            <form method="get" asp-page-handler="Edit" class="edit-form">
+                <input type="hidden" name="id" value="@pokemonSealed.Id" />
+                <button type="submit" class="edit-button">Edit</button>
+            </form>
+
+            <a href="?handler=ShowDetails&id=@pokemonSealed.Id" class="preview-button" data-back="See More" data-front="See More"></a>
+        </div>
+    }
+</div>

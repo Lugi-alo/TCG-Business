@@ -76,13 +76,13 @@ body {
 }
 
 .preview-button:hover:after {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
+     opacity: 1;
+     transform: translateY(0) rotateX(0);
 }
-
+ 
 .preview-button:hover:before {
-    opacity: 0;
-    transform: translateY(50%) rotateX(90deg);
+      opacity: 0;
+      transform: translateY(50%) rotateX(90deg);
 }
 
 .preview-button:after {
@@ -172,9 +172,9 @@ button.dropdown-toggle {
 }
 
 .filter-arrow.open-filter {
-    transform: rotate(180deg) translateY(-50%);
-    float: right;
-    margin-top: 8px;
+     transform: rotate(180deg) translateY(-50%);
+     float: right;
+     margin-top: 8px;
 }
 
 button.show-more {
@@ -198,8 +198,8 @@ button.show-more {
 }
 
 .extra-options.show-all {
-    max-height: 100000px;
-    opacity: 1;
+     max-height: 100000px;
+     opacity: 1;
 }
 
 .content {
@@ -226,8 +226,8 @@ button.show-more {
 }
 
 .page-button:hover {
-    background-color: #aaa;
-    color: #fff;
+     background-color: #aaa;
+     color: #fff;
 }
 
 .modal {
@@ -328,4 +328,35 @@ button.show-more {
 
 .preview-button.small {
     margin-left: 27px;
+}
+
+.sealed-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px; 
+    order: 1;
+}
+
+.individual-container-sealed {
+    width: 300px; 
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.individual-container-sealed:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-image-sealed {
+    width: 100%;
+    height: auto;
+    background-size: cover;
+    background-position: center;
 }
