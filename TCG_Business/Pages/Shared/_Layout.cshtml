@@ -11,7 +11,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FuwaCards</title>
-    <link rel="stylesheet" href="~/css/site.css?v=15"/>
+    <link rel="stylesheet" href="~/css/site.css?v=18"/>
 </head>
 <body>
     <ul class="navbar-nav">
@@ -45,12 +45,42 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted py-4">
         <div class="container">
-            &copy; 2024 - FuwaCards - <a asp-area="" asp-page="/Privacy">Privacy</a>
-
+            <div class="footer-section social-section">
+                <div class="social-container">
+                    <p>Follow Our Socials!</p>
+                    <a href="https://www.facebook.com"><img src="~/assets/facebook-icon.png" alt="Facebook" class="logo"></a>
+                    <a href="https://www.instagram.com"><img src="~/assets/instagram-icon.png" alt="Instagram" class="logo"></a>
+                </div>
+            </div>
+            <div class="footer-section info-container">
+                <div class="help-column">
+                    <h5>Help & Information</h5>
+                    <ul class="link-list">
+                        <li><a href="/Privacy">Privacy Policy</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">Terms Of Service</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="resource-column">
+                    <h5>Resources</h5>
+                    <ul class="link-list">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-section copyright-section">
+                <p>&copy; 2024, FuwaCards</p>
+            </div>
         </div>
     </footer>
+
+
+
+
 
     @await RenderSectionAsync("Scripts", required: false)
     <script src="~/script/filter.js" asp-append-version="true" defer></script>

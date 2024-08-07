@@ -102,6 +102,37 @@
     <input type="hidden" name="Filter.PageNumber" value="1" />
 </form>
 
+
+<div class="singles-container">
+    @if (Model.Filter.PokemonSinglesList != null && Model.Filter.PokemonSinglesList.Any())
+    {
+        foreach (var pokemonSingle in Model.Filter.PokemonSinglesList)
+        {
+            var imageUrl = Url.Content($"~{pokemonSingle.Image}");
+            <div class="individual-container">
+                <img class="pokemon-image-singles" src="@imageUrl" alt="Listing Image" />
+                <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
+                <p class="pokemon-price">£@pokemonSingle.Price.ToString("F2")</p>
+                
+                    <form method="post" asp-page-handler="Delete" class="delete-form">
+                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form method="get" asp-page="/Admin/SinglesStock" class="edit-form">
+                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
+                        <button type="submit" class="edit-button">Edit</button>
+                    </form>
+                
+                <a href="?handler=ShowDetails&id=@pokemonSingle.Id" class="preview-button" data-back="See More" data-front="See More"></a>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No items found.</p>
+    }
+</div>
+
 <div class="pagination">
     <form method="get">
         <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
@@ -126,35 +157,6 @@
     </form>
 </div>
 
-<div class="singles-container">
-    @if (Model.Filter.PokemonSinglesList != null && Model.Filter.PokemonSinglesList.Any())
-    {
-        foreach (var pokemonSingle in Model.Filter.PokemonSinglesList)
-        {
-            var imageUrl = Url.Content($"~{pokemonSingle.Image}");
-            <div class="individual-container">
-                <img class="pokemon-image-singles" src="@imageUrl" alt="Listing Image" />
-                <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
-                <p class="pokemon-price">£@pokemonSingle.Price.ToString("F2")</p>
-                
-                    <form method="post" asp-page-handler="Delete" class="delete-form">
-                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
-                        <button type="submit">Delete</button>
-                    </form>
-                    <form method="get" asp-page="/Admin/Stock" class="edit-form">
-                        <input type="hidden" name="id" value="@pokemonSingle.Id" />
-                        <button type="submit" class="edit-button">Edit</button>
-                    </form>
-                
-                <a href="?handler=ShowDetails&id=@pokemonSingle.Id" class="preview-button" data-back="See More" data-front="See More"></a>
-            </div>
-        }
-    }
-    else
-    {
-        <p>No items found.</p>
-    }
-</div>
 
 @if (Model.SelectedPokemonSingle != null)
 {
