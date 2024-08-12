@@ -364,7 +364,7 @@ button.show-more {
 }
 
 footer {
-    background-color: #f8f9fa;
+    background-color: #7851A9;
     padding: 40px 0;
     font-size: 1.1rem;
     border-top: 1px solid #dee2e6;
@@ -383,6 +383,7 @@ footer .container {
 footer p {
     margin: 0;
     font-size: 1.2rem;
+    color: white;
 }
 
 .social-container {
@@ -395,22 +396,22 @@ footer p {
 .social-container img.logo {
     width: 30px;
     height: 30px;
-    border: 1px solid black;
+    border: 3px solid white;
     border-radius: 50%;
     padding: 10px;
-    background-color: white;
+    background-color:#7851A9;
 }
 
 h5 {
     margin-top: 20px;
     margin-bottom: 10px;
     font-size: 1.2rem;
-    color: #343a40;
+    color: white
 }
 
-a {
+footer a {
     display: block;
-    color: #007bff;
+    color: white;
     text-decoration: none;
     margin-bottom: 8px;
     font-size: 1.1rem;
@@ -440,3 +441,4 @@ a:hover {
     list-style-type: none;
     padding-left: 0;
 }
+

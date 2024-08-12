@@ -8,6 +8,7 @@ namespace FuwaCards.ViewModels
         public Dictionary<string, int> SetNameCounts { get; set; }
         public Dictionary<string, int> TypeCounts { get; set; }
 
+        public string SortOrder { get; set; }
         public List<string> RaritySelection { get; set; }
         public List<string> SetNameSelection { get; set; }
         public List<string> TypeSelection { get; set; }

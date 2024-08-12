@@ -4,6 +4,7 @@ using FuwaCards.ViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 public class singlesModel : PageModel
 {
@@ -34,6 +35,7 @@ public class singlesModel : PageModel
         Filter.RaritySelection = filterRarity;
         Filter.SetNameSelection = filterSetName;
         Filter.TypeSelection = filterType;
+        Filter.SortOrder = Request.Query["Filter.SortOrder"];
 
         Filter.PageNumber = int.TryParse(Request.Query["Filter.PageNumber"], out var pageNumber) ? pageNumber : 1;
         Filter.PageSize = int.TryParse(Request.Query["Filter.PageSize"], out var pageSize) ? pageSize : 12;
@@ -69,20 +71,31 @@ public class singlesModel : PageModel
             query = query.Where(s => Filter.TypeSelection.Contains(s.Type));
         }
 
-        if (Filter.MinimumPriceFilter.HasValue)
+        if (Filter.SortOrder == "alphabetical")
         {
-            query = query.Where(s => s.Price >= Filter.MinimumPriceFilter.Value);
+            query = query.OrderBy(s => s.Name);
+        }
+        else if (Filter.SortOrder == "highestPrice")
+        {
+            query = query.OrderByDescending(s => (double)s.Price);
+        }
+        else if (Filter.SortOrder == "lowestPrice")
+        {
+            query = query.OrderBy(s => (double)s.Price);
+        }
+        else if (Filter.SortOrder == "newlyListed")
+        {
+            query = query.OrderByDescending(s => s.Id);
+        }
+        else
+        {
+            query = query.OrderBy(s => s.Name);
         }
 
-        if (Filter.MaximumPriceFilter.HasValue)
-        {
-            query = query.Where(s => s.Price <= Filter.MaximumPriceFilter.Value);
-        }
 
         Filter.TotalItems = await query.CountAsync();
 
         query = query
-            .OrderBy(s => s.Name)
             .Skip((Filter.PageNumber - 1) * Filter.PageSize)
             .Take(Filter.PageSize);
 

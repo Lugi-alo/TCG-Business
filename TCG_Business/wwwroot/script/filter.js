@@ -73,3 +73,7 @@ function resetCheckboxes() {
     });
 }
 
+function applySortOrder(sortOrder) {
+    document.getElementById('sortOrder').value = sortOrder;
+    document.getElementById('filtersForm').submit();
+}
