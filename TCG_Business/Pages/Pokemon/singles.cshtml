@@ -10,7 +10,7 @@
         <div class="dropdown">
             <span class="filter-label">Rarity</span>
             <div class="dropdown-content" id="rarityDropdown">
-                @foreach (var rarity in Model.RarityOptions.Take(5))
+                @foreach (var rarity in Model.RarityOptions.Take(3))
                 {
                     var count = Model.Filter.RarityCounts.ContainsKey(rarity) ? Model.Filter.RarityCounts[rarity] : 0;
                     <div class="filter-option">
@@ -22,7 +22,7 @@
                 @if (Model.RarityOptions.Count > 5)
                 {
                     <div class="extra-options">
-                        @foreach (var rarity in Model.RarityOptions.Skip(5))
+                        @foreach (var rarity in Model.RarityOptions.Skip(3))
                         {
                             var count = Model.Filter.RarityCounts.ContainsKey(rarity) ? Model.Filter.RarityCounts[rarity] : 0;
                             <div class="filter-option">
@@ -40,7 +40,7 @@
         <div class="dropdown">
             <span class="filter-label">Set</span>
             <div class="dropdown-content" id="setDropdown">
-                @foreach (var setName in Model.SetNameOptions.Take(5))
+                @foreach (var setName in Model.SetNameOptions.Take(3))
                 {
                     var count = Model.Filter.SetNameCounts.ContainsKey(setName) ? Model.Filter.SetNameCounts[setName] : 0;
                     <div class="filter-option">
@@ -49,10 +49,10 @@
                         <label class="setNameCount"> (@count)</label>
                     </div>
                 }
-                @if (Model.SetNameOptions.Count > 5)
+                @if (Model.SetNameOptions.Count > 3)
                 {
                     <div class="extra-options">
-                        @foreach (var setName in Model.SetNameOptions.Skip(5))
+                        @foreach (var setName in Model.SetNameOptions.Skip(3))
                         {
                             var count = Model.Filter.SetNameCounts.ContainsKey(setName) ? Model.Filter.SetNameCounts[setName] : 0;
                             <div class="filter-option">
@@ -70,7 +70,7 @@
         <div class="dropdown">
             <span class="filter-label">Type</span>
             <div class="dropdown-content" id="typeDropdown">
-                @foreach (var typeName in Model.TypeOptions.Take(5))
+                @foreach (var typeName in Model.TypeOptions.Take(3))
                 {
                     var count = Model.Filter.TypeCounts.ContainsKey(typeName) ? Model.Filter.TypeCounts[typeName] : 0;
                     <div class="filter-option">
@@ -82,7 +82,7 @@
                 @if (Model.TypeOptions.Count > 5)
                 {
                     <div class="extra-options" style="display: none;">
-                        @foreach (var typeName in Model.TypeOptions.Skip(5))
+                        @foreach (var typeName in Model.TypeOptions.Skip(3))
                         {
                             var count = Model.Filter.TypeCounts.ContainsKey(typeName) ? Model.Filter.TypeCounts[typeName] : 0;
                             <div class="filter-option">

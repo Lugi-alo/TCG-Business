@@ -1,39 +1,37 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.show-more').forEach(button => {
-            button.addEventListener('click', () => {
-                const targetId = button.getAttribute('data-target');
-                const extraOptions = document.querySelector(`#${targetId} .extra-options`);
-                const arrow = button.nextElementSibling;
+﻿const handleShowMoreToggle = () => {
+    document.querySelectorAll('.show-more').forEach(button => {
+        button.addEventListener('click', () => {
+            const targetId = button.getAttribute('data-target');
+            const extraOptions = document.querySelector(`#${targetId} .extra-options`);
+            const arrow = button.nextElementSibling;
 
-                if (extraOptions.classList.contains('show-all')) {
-                    extraOptions.classList.remove('show-all');
-                    arrow.classList.remove('open-filter');
-                    button.textContent = 'Show More';
-                } else {
-                    extraOptions.classList.add('show-all');
-                    arrow.classList.add('open-filter');
-                    button.textContent = 'Show Less';
-                }
-            });
-        });
-
-    const handleCheckboxChange = (checkbox) => {
-        checkbox.closest('form').submit();
-    };
-
-    const checkboxes = document.querySelectorAll('.filter-container input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', () => {
-            handleCheckboxChange(checkbox);
+            if (extraOptions.classList.contains('show-all')) {
+                extraOptions.classList.remove('show-all');
+                arrow.classList.remove('open-filter');
+                button.textContent = 'Show More';
+            } else {
+                extraOptions.classList.add('show-all');
+                arrow.classList.add('open-filter');
+                button.textContent = 'Show Less';
+            }
         });
     });
+};
 
+const handleCheckboxChange = (checkbox) => {
+    checkbox.closest('form').submit();
+};
+
+const checkboxes = document.querySelectorAll('.filter-container input[type="checkbox"]');
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        handleCheckboxChange(checkbox);
+    });
     resetCheckboxes();
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+const handleModalOperations = () => {
     const modal = document.getElementById('modal');
-    const modalContent = document.getElementById('modal-content');
     const closeButton = document.getElementsByClassName('close')[0];
 
     window.openModal = function (singlesId) {
@@ -58,18 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.onclick = function (event) {
-        if (event.target == modal) {
+        if (event.target === modal) {
             modal.style.display = "none";
         }
     };
-});
 
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            modal.style.display = "none";
+        });
+    }
+};
 
 function resetCheckboxes() {
     const checkboxes = document.querySelectorAll('.dropdown-content input[type="checkbox"]');
     checkboxes.forEach(checkbox => {
         checkbox.checked = false;
-
     });
 }
 
@@ -77,3 +79,8 @@ function applySortOrder(sortOrder) {
     document.getElementById('sortOrder').value = sortOrder;
     document.getElementById('filtersForm').submit();
 }
+
+handleShowMoreToggle();
+handleCheckboxEvents();
+resetCheckboxes();
+handleModalOperations();
