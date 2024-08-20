@@ -10,6 +10,25 @@ body {
     order: 1;
 }
 
+.filter-container {
+    overflow-y: scroll;
+    height: 400px; 
+}
+
+.filter-container::-webkit-scrollbar {
+    width: 12px; 
+    max-height: 10px;
+}
+
+.filter-container::-webkit-scrollbar-track {
+    background: #333745;
+}
+
+.filter-container::-webkit-scrollbar-thumb {
+    background: #E63462;
+    border-radius: 10px;
+}
+
 .filter-container input[type="text"],
 .filter-container input[type="number"],
 .filter-container button {
@@ -96,7 +115,7 @@ body {
     display: block;
     transition: 0.5s;
     position: absolute;
-    background: #BDA13E;
+    background: #E63462;
     content: attr(data-back);
     transform: translateY(-50%) rotateX(90deg);
     margin-bottom: 10px;
@@ -111,10 +130,10 @@ body {
     color: white;
     display: block;
     padding: 0 30px;
-    line-height: 40px;
+    line-height: 40px;  
     transition: 0.5s;
     position: relative;
-    background: #7851A9;
+    background: #333745;
     content: attr(data-front);
     transform: translateY(0) rotateX(0);
     margin-bottom: 10px;
@@ -186,7 +205,7 @@ button.show-more {
     display: flex;
     align-items: center;
     float: left;
-    color: #7851A9;
+    color: #E63462;
     font-weight: bold;
     margin-top: 7px;
 }
@@ -364,9 +383,9 @@ button.show-more {
 }
 
 footer {
-    background-color: #7851A9;
+    background-color: #333745;
     padding: 40px 0;
-    font-size: 1.1rem;
+    font-size: 16px;
     border-top: 1px solid #dee2e6;
 }
 
@@ -399,7 +418,7 @@ footer p {
     border: 3px solid white;
     border-radius: 50%;
     padding: 10px;
-    background-color:#7851A9;
+    background-color: #333745;
 }
 
 h5 {
@@ -414,7 +433,7 @@ footer a {
     color: white;
     text-decoration: none;
     margin-bottom: 8px;
-    font-size: 1.1rem;
+    font-size: 16px;
 }
 
 a:hover {
@@ -442,3 +461,33 @@ a:hover {
     padding-left: 0;
 }
 
+.filter-menu {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.filter-menu a {
+     color: black;
+     padding: 12px 16px;
+     text-decoration: none;
+     display: block;
+}
+
+.filter-menu a:hover {
+    background-color: #ddd;
+}
+
+.filter-option:hover .filter-menu {
+    display: block;
+}
+
+.category-dropdown {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    padding: 2px;
+}

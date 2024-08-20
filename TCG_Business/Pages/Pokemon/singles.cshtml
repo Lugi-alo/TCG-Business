@@ -8,6 +8,25 @@
 <form method="get" id="filtersForm">
     <div class="filter-container">
         <div class="dropdown">
+
+            <div class="category-dropdown">
+                <div class="filter-option">
+                    <button type="button" class="dropdown-toggle">
+                        Sort By: <span id="selected-option"></span>
+                    </button>
+                    <div class="filter-menu">
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('alphabetical', this)">Alphabetical</a>
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('lowestPrice', this)">Price Lowest to Highest</a>
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('highestPrice', this)">Price Highest to Lowest</a>
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('newlyListed', this)">Newly Listed</a>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="sortOrder" name="Filter.SortOrder" value="@Model.Filter.SortOrder" />
+            <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
+            <input type="hidden" name="Filter.PageNumber" value="1" />
+
             <span class="filter-label">Rarity</span>
             <div class="dropdown-content" id="rarityDropdown">
                 @foreach (var rarity in Model.RarityOptions.Take(3))
@@ -96,26 +115,8 @@
                 }
             </div>
         </div>
-
-        <div class="category-dropdown">
-            <span class="filter-label">Sort By</span>
-            <div class="filter-option">
-                <button type="button" class="dropdown-toggle">Sort By</button>
-                <div class="filter-menu">
-                    <a href="#" class="dropdown-item" onclick="applySortOrder('alphabetical')">Alphabetical</a>
-                    <a href="#" class="dropdown-item" onclick="applySortOrder('lowestPrice')">Price Lowest to Highest</a>
-                    <a href="#" class="dropdown-item" onclick="applySortOrder('highestPrice')">Price Highest to Lowest</a>
-                    <a href="#" class="dropdown-item" onclick="applySortOrder('newlyListed')">Newly Listed</a>
-                </div>
-            </div>
-        </div>
     </div>
-
-    <input type="hidden" id="sortOrder" name="Filter.SortOrder" value="@Model.Filter.SortOrder" />
-    <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
-    <input type="hidden" name="Filter.PageNumber" value="1" />
 </form>
-
 
 <div class="singles-container">
     @if (Model.Filter.PokemonSinglesList != null && Model.Filter.PokemonSinglesList.Any())

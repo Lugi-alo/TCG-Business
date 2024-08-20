@@ -73,13 +73,50 @@ function resetCheckboxes() {
     checkboxes.forEach(checkbox => {
         checkbox.checked = false;
     });
-}
+};
 
-function applySortOrder(sortOrder) {
-    document.getElementById('sortOrder').value = sortOrder;
-    document.getElementById('filtersForm').submit();
-}
+const handleDropdownOperations = () => {
+    const sortOrderInput = document.getElementById('sortOrder');
+    const selectedOptionSpan = document.getElementById('selected-option');
+    const filterMenuItems = document.querySelectorAll('.filter-menu .dropdown-item');
 
+    const getOptionText = (sortOrder) => {
+        switch (sortOrder) {
+            case 'alphabetical':
+                return 'Alphabetical';
+            case 'lowestPrice':
+                return 'Price Lowest to Highest';
+            case 'highestPrice':
+                return 'Price Highest to Lowest';
+            case 'newlyListed':
+                return 'Newly Listed';
+            default:
+                return 'Alphabetical'; 
+        }
+    };
+
+    window.applySortOrder = (sortOrder, element) => {
+        sortOrderInput.value = sortOrder;
+        selectedOptionSpan.textContent = element.textContent;
+
+        filterMenuItems.forEach(item => {
+            item.classList.toggle('active', item === element);
+        });
+
+        document.getElementById('filtersForm').submit();
+    };
+    const currentSortOrder = sortOrderInput.value;
+    const currentOptionText = getOptionText(currentSortOrder);
+
+    filterMenuItems.forEach(item => {
+        if (item.textContent === currentOptionText) {
+            item.classList.add('active');
+            selectedOptionSpan.textContent = item.textContent;
+        }
+    });
+};
+
+handleDropdownOperations();
 handleShowMoreToggle();
 handleCheckboxEvents();
 resetCheckboxes();
