@@ -1,27 +1,172 @@
 ﻿@page
+@using System.Security.Policy;
 @model TCG_Business.Pages.Pokemon.sealedModel
 @{
-    ViewData["Title"] = "Pokemon Listings";
+    ViewData["Title"] = "Pokemon Sealed";
+    var pageCount = (int)Math.Ceiling((double)Model.Filter.TotalItems / Model.Filter.PageSize);
 }
 
-<div class="sealed-container">
-    @foreach (var pokemonSealed in Model.PokemonSealedList)
-    {
-        <div class="individual-container-sealed">
-            <img class="pokemon-image-sealed" src="@Url.Content($"~{pokemonSealed.Image}")" alt="Listing Image" />
-            <p class="pokemon-name">@pokemonSealed.Name</p>
-            <p class="pokemon-price">£@pokemonSealed.Price.ToString("F2")</p>
 
-            <form method="post" asp-page-handler="Delete" class="delete-form">
-                <input type="hidden" name="id" value="@pokemonSealed.Id" />
-                <button type="submit">Delete</button>
-            </form>
-            <form method="get" asp-page="/Admin/SealedStock" class="edit-form">
-                <input type="hidden" name="id" value="@pokemonSealed.Id" />
-                <button type="submit" class="edit-button">Edit</button>
-            </form>
+<form method="get" id="filtersForm">
+    <div class="filter-container">
+        <div class="dropdown">
 
-            <a href="?handler=ShowDetails&id=@pokemonSealed.Id" class="preview-button" data-back="See More" data-front="See More"></a>
+            <div class="category-dropdown">
+                <div class="filter-option">
+                    <button type="button" class="dropdown-toggle">
+                        Sort By: <span id="selected-option"></span>
+                    </button>
+                    <div class="filter-menu">
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('alphabetical', this)">Alphabetical</a>
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('lowestPrice', this)">Price Lowest to Highest</a>
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('highestPrice', this)">Price Highest to Lowest</a>
+                        <a href="#" class="dropdown-item" onclick="applySortOrder('newlyListed', this)">Newly Listed</a>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="sortOrder" name="Filter.SortOrder" value="@Model.Filter.SortOrder" />
+            <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
+            <input type="hidden" name="Filter.PageNumber" value="1" />
+
+        <div class="dropdown">
+            <span class="filter-label">Set</span>
+            <div class="dropdown-content" id="setDropdown">
+                @foreach (var setName in Model.SetNameOptions.Take(3))
+                {
+                    var count = Model.Filter.SetNameCounts.ContainsKey(setName) ? Model.Filter.SetNameCounts[setName] : 0;
+                    <div class="filter-option">
+                        <input type="checkbox" id="setName_@setName" name="Filter.SetNameSelection" value="@setName" @(Model.Filter.SetNameSelection != null && Model.Filter.SetNameSelection.Contains(setName) ? "checked" : "") />
+                        <label for="setName_@setName" class="setNameLabel">@setName</label>
+                        <label class="setNameCount"> (@count)</label>
+                    </div>
+                }
+                @if (Model.SetNameOptions.Count > 3)
+                {
+                    <div class="extra-options">
+                        @foreach (var setName in Model.SetNameOptions.Skip(3))
+                        {
+                            var count = Model.Filter.SetNameCounts.ContainsKey(setName) ? Model.Filter.SetNameCounts[setName] : 0;
+                            <div class="filter-option">
+                                <input type="checkbox" id="setName_@setName" name="Filter.SetNameSelection" value="@setName" @(Model.Filter.SetNameSelection != null && Model.Filter.SetNameSelection.Contains(setName) ? "checked" : "") />
+                                <label for="setName_@setName" class="setNameLabel">@setName</label>
+                                <label class="setNameCount"> (@count)</label>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="show-more" data-target="setDropdown">Show More</button>
+                }
+            </div>
         </div>
+
+        <div class="dropdown">
+            <span class="filter-label">Type</span>
+            <div class="dropdown-content" id="typeDropdown">
+                @foreach (var typeName in Model.TypeOptions.Take(3))
+                {
+                    var count = Model.Filter.TypeCounts.ContainsKey(typeName) ? Model.Filter.TypeCounts[typeName] : 0;
+                    <div class="filter-option">
+                        <input type="checkbox" id="typeName_@typeName" name="Filter.TypeSelection" value="@typeName" @(Model.Filter.TypeSelection != null && Model.Filter.TypeSelection.Contains(typeName) ? "checked" : "") />
+                        <label for="typeName_@typeName" class="typeNameLabel">@typeName</label>
+                        <label class="typeNameCount"> (@count)</label>
+                    </div>
+                }
+                @if (Model.TypeOptions.Count > 5)
+                {
+                    <div class="extra-options" style="display: none;">
+                        @foreach (var typeName in Model.TypeOptions.Skip(3))
+                        {
+                            var count = Model.Filter.TypeCounts.ContainsKey(typeName) ? Model.Filter.TypeCounts[typeName] : 0;
+                            <div class="filter-option">
+                                <input type="checkbox" id="typeName_@typeName" name="Filter.TypeSelection" value="@typeName" @(Model.Filter.TypeSelection != null && Model.Filter.TypeSelection.Contains(typeName) ? "checked" : "") />
+                                <label for="typeName_@typeName" class="typeNameLabel">@typeName</label>
+                                <label class="typeNameCount"> (@count)</label>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="show-more" data-target="typeDropdown">Show More</button>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+<div class="sealed-container">
+    @if (Model.Filter.PokemonSealedList != null && Model.Filter.PokemonSealedList.Any())
+    {
+        foreach (var pokemonSealed in Model.Filter.PokemonSealedList)
+        {
+            var imageUrl = Url.Content($"~{pokemonSealed.Image}");
+            <div class="individual-container-sealed">
+                <img class="pokemon-image-sealed" src="@imageUrl" alt="Listing Image" />
+                <p class="pokemon-name">@pokemonSealed.Name</p>
+                <p class="pokemon-price">£@pokemonSealed.Price.ToString("F2")</p>
+
+                <form method="post" asp-page-handler="Delete" class="delete-form">
+                    <input type="hidden" name="id" value="@pokemonSealed.Id" />
+                    <button type="submit">Delete</button>
+                </form>
+                <form method="get" asp-page="/Admin/SealedStock" class="edit-form">
+                    <input type="hidden" name="id" value="@pokemonSealed.Id" />
+                    <button type="submit" class="edit-button">Edit</button>
+                </form>
+
+                <a href="?handler=ShowDetails&id=@pokemonSealed.Id" class="preview-button" data-back="See More" data-front="See More"></a>
+            </div>
+        }
+    }
+    else
+    {
+        <p> No Items Found </p>
     }
 </div>
+
+<div class="pagination">
+    <form method="get">
+        <input type="hidden" name="Filter.PageSize" value="@Model.Filter.PageSize" />
+        <input type="hidden" name="Filter.SetNameSelection" value="@string.Join(",", Model.Filter.SetNameSelection ?? new List<string>())" />
+        <input type="hidden" name="Filter.TypeSelection" value="@string.Join(",", Model.Filter.TypeSelection ?? new List<string>())" />
+
+        @if (Model.Filter.PageNumber > 1)
+        {
+            <button type="submit" class="page-button" name="Filter.PageNumber" value="@(Model.Filter.PageNumber - 1)">Previous</button>
+        }
+
+        @for (var i = 1; i <= pageCount; i++)
+        {
+            <button type="submit" class="page-button" name="Filter.PageNumber" value="@i" @(Model.Filter.PageNumber == i ? "disabled" : "")>@i</button>
+        }
+
+        @if (Model.Filter.PageNumber < pageCount)
+        {
+            <button type="submit" class="page-button" name="Filter.PageNumber" value="@(Model.Filter.PageNumber + 1)">Next</button>
+        }
+    </form>
+</div>
+
+
+@if (Model.SelectedPokemonSealed != null)
+{
+    <div id="modal" class="modal" style="display: block;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()"> Close &times;</span>
+            <img id="modal-image" src="@Url.Content($"~{Model.SelectedPokemonSealed.Image}")" alt="Listing Image" />
+
+            <div class="modal-information">
+                <h2 class="modal-title">@Model.SelectedPokemonSealed.Name</h2>
+                <p class="modal-price">Price: £@Model.SelectedPokemonSealed.Price.ToString("F2")</p>
+
+                <p class="modal-quantity">Quantity</p>
+                <div class="quantity-controls">
+                    <button class="minus-one">-</button>
+                    <button class="quantity">1</button>
+                    <button class="plus-one">+</button>
+                </div>
+
+                <a class="preview-button small" href="#" data-back="Add to Basket" data-front="Add to Basket"></a>
+            </div>
+        </div>
+    </div>
+}
+

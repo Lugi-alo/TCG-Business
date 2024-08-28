@@ -11,33 +11,35 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FuwaCards</title>
-    <link rel="stylesheet" href="~/css/site.css?v=23"/>
+    <link rel="stylesheet" href="~/css/site.css?v=25"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.jpg">
 </head>
 <body>
+    <div class="header-container">
     <ul class="navbar-nav">
         @if (SignInManager.IsSignedIn(User))
         {
             <li class="nav-item">
-                <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <a id="manage" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>
             <li class="nav-item">
-                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                    <button id="logout" type="submit">Logout</button>
                 </form>
             </li>
         }
         else
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                <a asp-area="Identity" asp-page="/Account/Login"> <span class="login"/> </a>
             </li>
         }
+
+        <li class="nav-item">
+                <a href="#"> <span class="basket"/> </a>
+        </li>
     </ul>
-
-
+    </div>
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -45,7 +47,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted py-4">
+    <footer>
         <div class="container">
             <div class="footer-section social-section">
                 <div class="social-container">
@@ -77,10 +79,6 @@
             </div>
         </div>
     </footer>
-
-
-
-
 
     @await RenderSectionAsync("Scripts", required: false)
     <script src="~/script/filter.js" asp-append-version="true" defer></script>

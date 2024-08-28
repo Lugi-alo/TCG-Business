@@ -2,6 +2,7 @@
 @model FuwaCards.Pages.singlesModel
 
 @{
+    ViewData["Title"] = "Pokemon Singles";
     var pageCount = (int)Math.Ceiling((double)Model.Filter.TotalItems / Model.Filter.PageSize);
 }
 
@@ -128,7 +129,8 @@
                 <img class="pokemon-image-singles" src="@imageUrl" alt="Listing Image" />
                 <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
                 <p class="pokemon-price">£@pokemonSingle.Price.ToString("F2")</p>
-                
+                @if (User.IsInRole("Admin"))
+                {
                     <form method="post" asp-page-handler="Delete" class="delete-form">
                         <input type="hidden" name="id" value="@pokemonSingle.Id" />
                         <button type="submit">Delete</button>
@@ -137,7 +139,7 @@
                         <input type="hidden" name="id" value="@pokemonSingle.Id" />
                         <button type="submit" class="edit-button">Edit</button>
                     </form>
-                
+                }
                 <a href="?handler=ShowDetails&id=@pokemonSingle.Id" class="preview-button" data-back="See More" data-front="See More"></a>
             </div>
         }
