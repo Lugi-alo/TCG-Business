@@ -98,7 +98,13 @@
         {
             var imageUrl = Url.Content($"~{pokemonSealed.Image}");
             <div class="individual-container-sealed">
-                <img class="pokemon-image-sealed" src="@imageUrl" alt="Listing Image" />
+                <div class="image-wrapper">
+                    @if (pokemonSealed.Quantity == 0)
+                    {
+                        <span class="sold-out">Sold Out</span>
+                    }
+                    <img class="pokemon-image-sealed" src="@imageUrl" alt="Listing Image" />
+                </div>
                 <p class="pokemon-name">@pokemonSealed.Name</p>
                 <p class="pokemon-price">£@pokemonSealed.Price.ToString("F2")</p>
 
@@ -111,7 +117,7 @@
                     <button type="submit" class="edit-button">Edit</button>
                 </form>
 
-                <a href="?handler=ShowDetails&id=@pokemonSealed.Id" class="preview-button" data-back="See More" data-front="See More"></a>
+              <!-- <a href="?handler=ShowDetails&id=@pokemonSealed.Id" class="preview-button" data-back="See More" data-front="See More"></a> -->
             </div>
         }
     }

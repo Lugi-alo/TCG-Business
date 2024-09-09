@@ -126,9 +126,16 @@
         {
             var imageUrl = Url.Content($"~{pokemonSingle.Image}");
             <div class="individual-container">
-                <img class="pokemon-image-singles" src="@imageUrl" alt="Listing Image" />
+                <div class="image-wrapper">
+                    @if (pokemonSingle.Quantity == 0)
+                    {
+                        <span class="sold-out">Sold Out</span>
+                    }
+                    <img class="pokemon-image-singles" src="@imageUrl" alt="Listing Image" />
+                </div>
                 <p class="pokemon-name">@pokemonSingle.Name @pokemonSingle.Rarity @pokemonSingle.SetName</p>
                 <p class="pokemon-price">£@pokemonSingle.Price.ToString("F2")</p>
+
                 @if (User.IsInRole("Admin"))
                 {
                     <form method="post" asp-page-handler="Delete" class="delete-form">
@@ -140,6 +147,7 @@
                         <button type="submit" class="edit-button">Edit</button>
                     </form>
                 }
+
                 <a href="?handler=ShowDetails&id=@pokemonSingle.Id" class="preview-button" data-back="See More" data-front="See More"></a>
             </div>
         }
@@ -149,6 +157,7 @@
         <p>No items found.</p>
     }
 </div>
+
 
 <div class="pagination">
     <form method="get">

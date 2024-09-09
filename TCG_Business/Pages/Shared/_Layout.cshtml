@@ -11,12 +11,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FuwaCards</title>
-    <link rel="stylesheet" href="~/css/site.css?v=29"/>
+    <link rel="stylesheet" href="~/css/site.css?v=32"/>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.jpg">
 </head>
 <body>
     <div class="header-container">
     <ul class="navbar-nav">
+
+        <li>
+            <a class="user-navigation" asp-page="/index"> Home </a>
+         </li>
+         <li>
+             <a class="user-navigation" asp-page="/Pokemon/singles"> Pokemon Singles </a>
+         </li>
+         <li>
+              <a class="user-navigation" asp-page="/Pokemon/sealed"> Pokemon Sealed </a>
+         </li>
+         <li>
+             <a class="user-navigation" asp-page="#"> Yugioh </a>
+         </li>
+         <li>
+             <a class="user-navigation" asp-page="#"> Digimon </a>
+         </li>
+         <li>
+             <a class="user-navigation" asp-page="#"> Magic The Gathering </a>
+         </li>
+
+
         @if (SignInManager.IsSignedIn(User))
         {
             <li class="nav-item">
